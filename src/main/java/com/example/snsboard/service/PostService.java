@@ -1,12 +1,16 @@
 package com.example.snsboard.service;
 
 import com.example.snsboard.model.Post;
+import com.example.snsboard.model.PostPatchRequestBody;
 import com.example.snsboard.model.PostPostRequestBody;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -30,13 +34,35 @@ public class PostService {
     }
 
     public Post createPost(PostPostRequestBody postPostRequestBody) {
-       Long newPostId = posts.stream().mapToLong(Post::getPostId).max().orElse(0L) +1;
+       var newPostId = posts.stream().mapToLong(Post::getPostId).max().orElse(0L) +1;
 
 
-       Post newPost = new Post(newPostId, postPostRequestBody.body(), ZonedDateTime.now());
+       var newPost = new Post(newPostId, postPostRequestBody.body(), ZonedDateTime.now());
        posts.add(newPost);
 
        return newPost;
     }
 
+    public Post updatePost(Long postId, PostPatchRequestBody postPatchRequestBody) {
+       Optional<Post> postOptional =
+               posts.stream().filter(post -> postId.equals(post.getPostId())).findFirst();
+
+        if(postOptional.isPresent()) {
+            Post postToUpdate = postOptional.get();
+            postToUpdate.setBody(postPatchRequestBody.body());
+            return postToUpdate;
+        } else {
+            throw  new ResponseStatusException(HttpStatus.NOT_FOUND,"Post not found");
+        }
+    }
+
+    public void deletePost(Long postId) {
+        Optional<Post> postOptional = posts.stream().filter(post -> postId.equals(post.getPostId())).findFirst();
+
+        if(postOptional.isPresent()) {
+           posts.remove(postOptional .get());
+        } else {
+            throw  new ResponseStatusException(HttpStatus.NOT_FOUND,"Post not found");
+        }
+    }
 }

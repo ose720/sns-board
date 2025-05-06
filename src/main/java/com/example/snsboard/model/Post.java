@@ -3,6 +3,7 @@ package com.example.snsboard.model;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+
 public class Post {
 
     private Long postId;

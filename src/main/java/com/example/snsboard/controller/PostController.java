@@ -1,6 +1,7 @@
 package com.example.snsboard.controller;
 
 import com.example.snsboard.model.Post;
+import com.example.snsboard.model.PostPatchRequestBody;
 import com.example.snsboard.model.PostPostRequestBody;
 import com.example.snsboard.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<List<Post>> getPosts() {
-        List<Post> posts = postService.getPosts();
+        var posts = postService.getPosts();
         return ResponseEntity.ok(posts);
     }
 
@@ -37,4 +38,15 @@ public class PostController {
         return ResponseEntity.ok(post);
     }
 
+    @PatchMapping("/{postId}")
+    public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody PostPatchRequestBody postPatchRequestBody) {
+        var post = postService.updatePost(postId, postPatchRequestBody);
+        return ResponseEntity.ok(post);
+    }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId) {
+        postService.deletePost(postId);
+        return ResponseEntity.noContent().build();
+    }
 }
