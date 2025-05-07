@@ -1,65 +1,32 @@
 package com.example.snsboard.model;
 
+import com.example.snsboard.model.entity.PostEntity;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public record Post(
 
-public class Post {
+    Long postId,
 
-    private Long postId;
+    String body,
 
-    private String body;
+    ZonedDateTime createdDateTime,
 
-    private ZonedDateTime createdDateTime;
+    ZonedDateTime updatedDateTime,
 
-    public Post(Long postId, String body, ZonedDateTime createdDateTime) {
-        this.postId = postId;
-        this.body = body;
-        this.createdDateTime = createdDateTime;
-    }
+    ZonedDateTime deletedDateTime) {
 
-    public Long getPostId() {
-        return postId;
-    }
+    public static Post from(PostEntity postEntity) {
+        return new Post(
+                postEntity.getPostId(),
+                postEntity.getBody(),
+                postEntity.getCreatedDateTime(),
+                postEntity.getUpdatedDateTime(),
+                postEntity.getDeletedDateTime());
 
-    public void setPostId(Long postId) {
-        this.postId = postId;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public ZonedDateTime getCreatedDateTime() {
-        return createdDateTime;
-    }
-
-    public void setCreatedDateTime(ZonedDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Post post = (Post) o;
-        return Objects.equals(getPostId(), post.getPostId()) && Objects.equals(getBody(), post.getBody()) && Objects.equals(getCreatedDateTime(), post.getCreatedDateTime());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getPostId(), getBody(), getCreatedDateTime());
-    }
-
-    @Override
-    public String toString() {
-        return "Post{" +
-                "postId=" + postId +
-                ", body='" + body + '\'' +
-                ", createdDateTime=" + createdDateTime +
-                '}';
     }
 }
+
