@@ -73,7 +73,12 @@ public class PostEntity {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         PostEntity that = (PostEntity) o;
-        return Objects.equals(getPostId(), that.getPostId()) && Objects.equals(getBody(), that.getBody()) && Objects.equals(getCreatedDateTime(), that.getCreatedDateTime()) && Objects.equals(getUpdatedDateTime(), that.getUpdatedDateTime()) && Objects.equals(getDeletedDateTime(), that.getDeletedDateTime());
+        return Objects.equals(getPostId(),
+                that.getPostId()) && Objects.equals(getBody(),
+                that.getBody()) && Objects.equals(getCreatedDateTime(),
+                that.getCreatedDateTime()) && Objects.equals(getUpdatedDateTime(),
+                that.getUpdatedDateTime()) && Objects.equals(getDeletedDateTime(),
+                that.getDeletedDateTime());
     }
 
     @Override
