@@ -1,8 +1,8 @@
 package com.example.snsboard.repository;
 
-import com.fastcampus.board.model.entity.PostEntity;
-import com.fastcampus.board.model.entity.ReplyEntity;
-import com.fastcampus.board.model.entity.UserEntity;
+import com.example.snsboard.model.entity.PostEntity;
+import com.example.snsboard.model.entity.ReplyEntity;
+import com.example.snsboard.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

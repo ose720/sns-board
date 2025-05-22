@@ -1,12 +1,12 @@
 package com.example.snsboard.controller;
 
-import com.fastcampus.board.model.entity.UserEntity;
-import com.fastcampus.board.model.post.Post;
-import com.fastcampus.board.model.post.PostPatchRequestBody;
-import com.fastcampus.board.model.post.PostPostRequestBody;
-import com.fastcampus.board.model.user.LikedUser;
-import com.fastcampus.board.service.PostService;
-import com.fastcampus.board.service.UserService;
+import com.example.snsboard.model.entity.UserEntity;
+import com.example.snsboard.model.post.Post;
+import com.example.snsboard.model.post.PostPatchRequestBody;
+import com.example.snsboard.model.post.PostPostRequestBody;
+import com.example.snsboard.model.user.LikedUser;
+import com.example.snsboard.service.PostService;
+import com.example.snsboard.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
 package com.example.snsboard.repository;
 
-import com.fastcampus.board.model.entity.UserEntity;
-import com.fastcampus.board.model.user.FollowerWithFollowingStatusProjection;
-import com.fastcampus.board.model.user.UserWhoLikedPostWithFollowingStatusProjection;
-import com.fastcampus.board.model.user.UserWithFollowingStatusProjection;
+import com.example.snsboard.model.entity.UserEntity;
+import com.example.snsboard.model.user.FollowerWithFollowingStatusProjection;
+import com.example.snsboard.model.user.UserWhoLikedPostWithFollowingStatusProjection;
+import com.example.snsboard.model.user.UserWithFollowingStatusProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

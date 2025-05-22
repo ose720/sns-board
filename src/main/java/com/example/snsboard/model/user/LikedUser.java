@@ -1,4 +1,4 @@
-package com.example.snsboard.model.User;
+package com.example.snsboard.model.user;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

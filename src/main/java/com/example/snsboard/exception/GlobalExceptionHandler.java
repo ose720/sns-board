@@ -1,6 +1,6 @@
 package com.example.snsboard.exception;
 
-import com.fastcampus.board.model.error.ClientErrorResponse;
+import com.example.snsboard.model.error.ClientErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;

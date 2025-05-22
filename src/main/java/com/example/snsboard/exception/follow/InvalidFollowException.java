@@ -1,6 +1,6 @@
 package com.example.snsboard.exception.follow;
 
-import com.fastcampus.board.exception.ClientErrorException;
+import com.example.snsboard.exception.ClientErrorException;
 import org.springframework.http.HttpStatus;
 
 public class InvalidFollowException extends ClientErrorException {

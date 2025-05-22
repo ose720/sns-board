@@ -1,6 +1,6 @@
 package com.example.snsboard.exception.user;
 
-import com.fastcampus.board.exception.ClientErrorException;
+import com.example.snsboard.exception.ClientErrorException;
 import org.springframework.http.HttpStatus;
 
 public class UserNotAllowedException extends ClientErrorException {

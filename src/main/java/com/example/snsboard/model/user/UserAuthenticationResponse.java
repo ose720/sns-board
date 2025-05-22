@@ -1,3 +1,3 @@
-package com.example.snsboard.model.User;
+package com.example.snsboard.model.user;
 
 public record UserAuthenticationResponse(String accessToken) {}

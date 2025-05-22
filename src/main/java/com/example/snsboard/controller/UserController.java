@@ -1,12 +1,13 @@
 package com.example.snsboard.controller;
 
-import com.fastcampus.board.model.entity.UserEntity;
-import com.fastcampus.board.model.post.Post;
-import com.fastcampus.board.model.reply.Reply;
-import com.fastcampus.board.model.user.*;
-import com.fastcampus.board.service.PostService;
-import com.fastcampus.board.service.ReplyService;
-import com.fastcampus.board.service.UserService;
+import com.example.snsboard.model.user.User;
+import com.example.snsboard.model.entity.UserEntity;
+import com.example.snsboard.model.post.Post;
+import com.example.snsboard.model.reply.Reply;
+import com.example.snsboard.model.user.*;
+import com.example.snsboard.service.PostService;
+import com.example.snsboard.service.ReplyService;
+import com.example.snsboard.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
-  @Autowired UserService userService;
+  @Autowired
+  UserService userService;
   @Autowired PostService postService;
 
   @Autowired ReplyService replyService;

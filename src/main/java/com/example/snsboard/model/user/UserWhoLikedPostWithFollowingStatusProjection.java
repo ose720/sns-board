@@ -1,8 +1,8 @@
-package com.example.snsboard.model.User;
+package com.example.snsboard.model.user;
 
 import java.time.Instant;
 
-public interface UserWithFollowingStatusProjection {
+public interface UserWhoLikedPostWithFollowingStatusProjection {
   Long getUserId();
 
   String getUsername();
@@ -18,6 +18,10 @@ public interface UserWithFollowingStatusProjection {
   Instant getCreatedDateTime();
 
   Instant getUpdatedDateTime();
+
+  Instant getLikedDateTime();
+
+  Long getLikedPostId();
 
   Boolean getIsFollowing();
 }

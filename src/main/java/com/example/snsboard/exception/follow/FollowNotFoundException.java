@@ -1,7 +1,7 @@
 package com.example.snsboard.exception.follow;
 
-import com.fastcampus.board.exception.ClientErrorException;
-import com.fastcampus.board.model.entity.UserEntity;
+import com.example.snsboard.exception.ClientErrorException;
+import com.example.snsboard.model.entity.UserEntity;
 import org.springframework.http.HttpStatus;
 
 public class FollowNotFoundException extends ClientErrorException {

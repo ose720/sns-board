@@ -1,8 +1,8 @@
 package com.example.snsboard.repository;
 
-import com.fastcampus.board.model.entity.PostEntity;
-import com.fastcampus.board.model.entity.UserEntity;
-import com.fastcampus.board.model.post.PostWithLikingStatusProjection;
+import com.example.snsboard.model.entity.PostEntity;
+import com.example.snsboard.model.entity.UserEntity;
+import com.example.snsboard.model.post.PostWithLikingStatusProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

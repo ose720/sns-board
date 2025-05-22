@@ -1,10 +1,10 @@
 package com.example.snsboard.controller;
 
-import com.fastcampus.board.model.entity.UserEntity;
-import com.fastcampus.board.model.reply.Reply;
-import com.fastcampus.board.model.reply.ReplyPatchRequestBody;
-import com.fastcampus.board.model.reply.ReplyPostRequestBody;
-import com.fastcampus.board.service.ReplyService;
+import com.example.snsboard.model.entity.UserEntity;
+import com.example.snsboard.model.reply.Reply;
+import com.example.snsboard.model.reply.ReplyPatchRequestBody;
+import com.example.snsboard.model.reply.ReplyPostRequestBody;
+import com.example.snsboard.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
