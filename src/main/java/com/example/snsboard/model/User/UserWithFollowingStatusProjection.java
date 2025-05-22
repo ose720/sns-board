@@ -1,0 +1,23 @@
+package com.example.snsboard.model.User;
+
+import java.time.Instant;
+
+public interface UserWithFollowingStatusProjection {
+  Long getUserId();
+
+  String getUsername();
+
+  String getProfile();
+
+  String getDescription();
+
+  Long getFollowersCount();
+
+  Long getFollowingsCount();
+
+  Instant getCreatedDateTime();
+
+  Instant getUpdatedDateTime();
+
+  Boolean getIsFollowing();
+}

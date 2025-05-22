@@ -1,62 +1,101 @@
 package com.example.snsboard.service;
 
-import com.example.snsboard.exception.post.PostNotFoundException;
-import com.example.snsboard.model.Post;
-import com.example.snsboard.model.PostPatchRequestBody;
-import com.example.snsboard.model.PostPostRequestBody;
-import com.example.snsboard.model.entity.PostEntity;
-import com.example.snsboard.model.repository.PostEntityRepository;
+import com.fastcampus.board.exception.post.PostNotFoundException;
+import com.fastcampus.board.exception.user.UserNotAllowedException;
+import com.fastcampus.board.exception.user.UserNotFoundException;
+import com.fastcampus.board.model.entity.LikeEntity;
+import com.fastcampus.board.model.entity.PostEntity;
+import com.fastcampus.board.model.entity.UserEntity;
+import com.fastcampus.board.model.post.Post;
+import com.fastcampus.board.model.post.PostPatchRequestBody;
+import com.fastcampus.board.model.post.PostPostRequestBody;
+import com.fastcampus.board.repository.LikeEntityRepository;
+import com.fastcampus.board.repository.PostEntityRepository;
+import com.fastcampus.board.repository.UserEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class PostService {
 
-    @Autowired private PostEntityRepository postEntityRepository;
+  @Autowired private PostEntityRepository postEntityRepository;
+  @Autowired private UserEntityRepository userEntityRepository;
 
-    private static final List<Post> posts = new ArrayList<>();
+  @Autowired private LikeEntityRepository likeEntityRepository;
 
+  public List<Post> getPosts(UserEntity currentUser) {
+    var projections = postEntityRepository.findPostsWithLikingStatus(currentUser.getUserId());
+    return projections.stream().map(Post::from).toList();
+  }
 
-    public List<Post> getPosts() {
-        var postEntities = postEntityRepository.findAll();
-        return postEntities.stream().map(Post::from).toList();
+  public List<Post> getPostsByUsername(String username, UserEntity currentUser) {
+    var user =
+        userEntityRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+    var projections =
+        postEntityRepository.findPostsByUserIdWithLikingStatus(
+            user.getUserId(), currentUser.getUserId());
+    return projections.stream().map(Post::from).toList();
+  }
+
+  public Post getPostByPostId(Long postId, UserEntity currentUser) {
+    var postEntity =
+        postEntityRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
+    return getPostWithLikingStatus(postEntity, currentUser);
+  }
+
+  public Post createPost(PostPostRequestBody postPostRequestBody, UserEntity currentUser) {
+    var savedPostEntity =
+        postEntityRepository.save(PostEntity.of(postPostRequestBody.body(), currentUser));
+    return Post.from(savedPostEntity);
+  }
+
+  public Post updatePost(
+      Long postId, PostPatchRequestBody postPatchRequestBody, UserEntity currentUser) {
+    var postEntity =
+        postEntityRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
+
+    if (!postEntity.getUser().equals(currentUser)) {
+      throw new UserNotAllowedException();
     }
 
-    public Post getPostByPostId(Long postId) {
-       var postEntity = postEntityRepository.findById(postId)
-               .orElseThrow(() -> new PostNotFoundException(postId));
+    postEntity.setBody(postPatchRequestBody.body());
+    var updatedEntity = postEntityRepository.save(postEntity);
+    return Post.from(updatedEntity);
+  }
 
-        return Post.from(postEntity);
+  public void deletePost(Long postId, UserEntity currentUser) {
+    var postEntity =
+        postEntityRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
+
+    if (!postEntity.getUser().equals(currentUser)) {
+      throw new UserNotAllowedException();
     }
 
-    public Post createPost(PostPostRequestBody postPostRequestBody) {
-        var postEntity = new PostEntity();
-        postEntity.setBody(postPostRequestBody.body());
-        var savedPostEntity = postEntityRepository.save(postEntity);
-        return Post.from(savedPostEntity);
+    postEntityRepository.delete(postEntity);
+  }
+
+  @Transactional
+  public Post toggleLike(Long postId, UserEntity currentUser) {
+    PostEntity postEntity =
+        postEntityRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+    var likeEntity = likeEntityRepository.findByUserAndPost(currentUser, postEntity);
+
+    if (likeEntity.isPresent()) {
+      likeEntityRepository.delete(likeEntity.get());
+      postEntity.setLikesCount(Math.max(0, postEntity.getLikesCount() - 1));
+      return Post.from(postEntityRepository.save(postEntity), false);
+    } else {
+      likeEntityRepository.save(LikeEntity.of(currentUser, postEntity));
+      postEntity.setLikesCount(postEntity.getLikesCount() + 1);
+      return Post.from(postEntityRepository.save(postEntity), true);
     }
+  }
 
-    public Post updatePost(Long postId, PostPatchRequestBody postPatchRequestBody) {
-        var postEntity = postEntityRepository.findById(postId)
-                .orElseThrow(() -> new PostNotFoundException(postId));
-        postEntity.setBody(postPatchRequestBody.body());
-        var updatedPostEntity = postEntityRepository.save(postEntity);
-        return Post.from(updatedPostEntity);
-
-    }
-
-    public void deletePost(Long postId) {
-        var postEntity = postEntityRepository.findById(postId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found."));
-        postEntityRepository.delete(postEntity);
-
-    }
+  private Post getPostWithLikingStatus(PostEntity postEntity, UserEntity currentUser) {
+    var isLiking = likeEntityRepository.findByUserAndPost(currentUser, postEntity).isPresent();
+    return Post.from(postEntity, isLiking);
+  }
 }
